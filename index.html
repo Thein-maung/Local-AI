@@ -3,422 +3,389 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>မြန်မာစာ AI - Fixed City Buttons</title>
-
-      <style>
-    * { 
-        margin: 0; 
-        padding: 0; 
-        box-sizing: border-box; 
-    }
-    
-    body { 
-        font-family: 'Pyidaungsu', 'Myanmar3', Arial, sans-serif;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        min-height: 100vh;
-        padding: 10px;
-        background-attachment: fixed;
-    }
-
-    .chat-container {
-        width: 100%;
-        max-width: 100%;
-        height: 100vh;
-        background: rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 20px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-    }
-
-    .header {
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        padding: 20px 15px;
-        text-align: center;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .header h1 {
-        color: white;
-        font-size: 1.3em;
-        margin-bottom: 5px;
-        text-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        font-weight: 600;
-    }
-
-    .header p {
-        color: rgba(255, 255, 255, 0.9);
-        font-size: 0.85em;
-        text-shadow: 0 1px 5px rgba(0,0,0,0.2);
-    }
-
-    .messages {
-        flex: 1;
-        padding: 20px;
-        overflow-y: auto;
-        background: rgba(255, 255, 255, 0.05);
-    }
-
-    /* Custom Scrollbar */
-    .messages::-webkit-scrollbar {
-        width: 6px;
-    }
-
-    .messages::-webkit-scrollbar-track {
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 10px;
-    }
-
-    .messages::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.3);
-        border-radius: 10px;
-    }
-
-    .messages::-webkit-scrollbar-thumb:hover {
-        background: rgba(255, 255, 255, 0.5);
-    }
-
-    .message {
-        margin-bottom: 20px;
-        display: flex;
-        animation: messageSlide 0.3s ease-out;
-    }
-
-    @keyframes messageSlide {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    .user-message {
-        justify-content: flex-end;
-    }
-
-    .bot-message {
-        justify-content: flex-start;
-    }
-
-    .bubble {
-        max-width: 85%;
-        padding: 15px 18px;
-        border-radius: 20px;
-        line-height: 1.5;
-        font-size: 0.95em;
-        position: relative;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .user-message .bubble {
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        color: white;
-        border-bottom-right-radius: 5px;
-    }
-
-    .bot-message .bubble {
-        background: rgba(255, 255, 255, 0.95);
-        color: #333;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        border-bottom-left-radius: 5px;
-    }
-
-    .input-area {
-        padding: 20px;
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        display: flex;
-        gap: 12px;
-        align-items: center;
-    }
-
-    #userInput {
-        flex: 1;
-        padding: 15px 18px;
-        border: none;
-        border-radius: 25px;
-        outline: none;
-        font-size: 0.95em;
-        font-family: inherit;
-        background: rgba(255, 255, 255, 0.9);
-        backdrop-filter: blur(10px);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
-    }
-
-    #userInput:focus {
-        background: rgba(255, 255, 255, 1);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-        transform: translateY(-2px);
-    }
-
-    #sendBtn {
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        color: white;
-        border: none;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        cursor: pointer;
-        font-size: 1.2em;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    #sendBtn:hover {
-        transform: translateY(-2px) scale(1.05);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-    }
-
-    .quick-buttons {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin: 15px 0;
-    }
-
-    .quick-btn {
-        background: rgba(0, 0, 0, 0.4);
-        backdrop-filter: blur(10px);
-        color: #FFD700; /* Golden Yellow */
-        border: 2px solid #FFD700;
-        padding: 12px 15px;
-        border-radius: 15px;
-        font-size: 0.85em;
-        cursor: pointer;
-        font-family: inherit;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        font-weight: bold;
-        text-shadow: 0 1px 3px rgba(0,0,0,0.9);
-    }
-
-    .quick-btn:hover {
-        background: rgba(255, 215, 0, 0.2);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    }
-
-    .city-buttons {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
-        margin: 12px 0;
-    }
-
-    .city-btn {
-        background: rgba(0, 0, 0, 0.5);
-        backdrop-filter: blur(10px);
-        color: #00FF00; /* Bright Green */
-        border: 2px solid #00FF00;
-        padding: 10px 8px;
-        border-radius: 12px;
-        font-size: 0.75em;
-        cursor: pointer;
-        text-align: center;
-        transition: all 0.3s ease;
-        min-height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        text-shadow: 0 1px 3px rgba(0,0,0,0.9);
-    }
-
-    .city-btn:hover {
-        background: rgba(0, 255, 0, 0.2);
-        transform: translateY(-1px);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .weather-card {
-        background: linear-gradient(135deg, #74b9ff, #0984e3);
-        color: white;
-        padding: 20px;
-        border-radius: 18px;
-        margin: 12px 0;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .news-card {
-        background: linear-gradient(135deg, #a29bfe, #6c5ce7);
-        color: white;
-        padding: 20px;
-        border-radius: 18px;
-        margin: 12px 0;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .exchange-card {
-        background: linear-gradient(135deg, #00b894, #00a085);
-        color: white;
-        padding: 20px;
-        border-radius: 18px;
-        margin: 12px 0;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .ai-card {
-        background: linear-gradient(135deg, #fd79a8, #e84393);
-        color: white;
-        padding: 20px;
-        border-radius: 18px;
-        margin: 12px 0;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .news-item {
-        background: rgba(255, 255, 255, 0.2);
-        padding: 12px;
-        border-radius: 10px;
-        margin: 10px 0;
-        border-left: 4px solid rgba(255, 255, 255, 0.5);
-    }
-
-    .typing {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        color: #666;
-        font-style: italic;
-    }
-
-    .typing-dot {
-        width: 8px;
-        height: 8px;
-        background: #666;
-        border-radius: 50%;
-        animation: typing-bounce 1.4s infinite ease-in-out;
-    }
-
-    .typing-dot:nth-child(1) { animation-delay: -0.32s; }
-    .typing-dot:nth-child(2) { animation-delay: -0.16s; }
-
-    @keyframes typing-bounce {
-        0%, 80%, 100% { 
-            transform: scale(0.8);
-            opacity: 0.5;
+    <title>မြန်မာစာ AI - ပြင်ဆင်ထားသော City Buttons</title>
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
         }
-        40% { 
-            transform: scale(1);
-            opacity: 1;
+        
+        body { 
+            font-family: 'Pyidaungsu', 'Myanmar3', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-    }
 
-    .section-title {
-        color: #FFA500; /* Orange */
-        margin: 15px 0 8px 0;
-        font-size: 0.95em;
-        font-weight: 600;
-        text-shadow: 0 1px 3px rgba(0,0,0,0.5);
-    }
-
-    .feature-badge {
-        background: rgba(255, 255, 255, 0.3);
-        padding: 3px 10px;
-        border-radius: 12px;
-        font-size: 0.7em;
-        margin-left: 8px;
-    }
-
-    .install-btn {
-        background: rgba(255, 255, 255, 0.3);
-        color: white;
-        border: none;
-        padding: 8px 15px;
-        border-radius: 20px;
-        font-size: 0.8em;
-        cursor: pointer;
-        margin-top: 10px;
-        transition: all 0.3s ease;
-    }
-
-    .install-btn:hover {
-        background: rgba(255, 255, 255, 0.4);
-        transform: translateY(-1px);
-    }
-
-    @media (max-width: 480px) {
         .chat-container {
-            height: 100vh;
-            border-radius: 0;
+            width: 100%;
+            max-width: 450px;
+            height: 90vh;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
-        
+
         .header {
-            padding: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
         }
-        
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 1.4em;
+            margin-bottom: 5px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.85em;
+        }
+
         .messages {
+            flex: 1;
             padding: 15px;
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.05);
         }
-        
+
+        /* Custom Scrollbar */
+        .messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .messages::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .messages::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            animation: messageSlide 0.3s ease-out;
+        }
+
+        @keyframes messageSlide {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user-message { justify-content: flex-end; }
+        .bot-message { justify-content: flex-start; }
+
         .bubble {
-            max-width: 90%;
+            max-width: 85%;
             padding: 12px 15px;
+            border-radius: 18px;
+            line-height: 1.4;
+            font-size: 0.9em;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
-        
+
+        .user-message .bubble {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .bot-message .bubble {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-bottom-left-radius: 5px;
+        }
+
         .input-area {
             padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            gap: 10px;
+            align-items: center;
         }
-        
-        .city-buttons {
-            grid-template-columns: repeat(2, 1fr);
-        }
-        
-        .quick-buttons {
-            grid-template-columns: 1fr;
-        }
-    }
 
-    /* Alternative Color Options - Uncomment to try different colors */
-    /*
-    .quick-btn {
-        background: rgba(0, 0, 0, 0.4);
-        color: #FF6B6B; 
-        border: 2px solid #FF6B6B;
-    }
-    
-    .city-btn {
-        background: rgba(0, 0, 0, 0.5);
-        color: #4ECDC4;
-        border: 2px solid #4ECDC4;
-    }
-    
-    .section-title {
-        color: #FFE66D;
-    }
-    */
-</style>
+        #userInput {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 20px;
+            font-size: 0.9em;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        #userInput:focus {
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        #sendBtn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            font-size: 1.1em;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #sendBtn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .quick-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin: 10px 0;
+        }
+
+        .quick-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            text-align: center;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .quick-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* ✅ IMPROVED: City Buttons - Better Design */
+        .city-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin: 10px 0;
+        }
+
+        .city-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 10px 5px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            cursor: pointer;
+            text-align: center;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .city-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .weather-card {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            margin: 10px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .news-card {
+            background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            margin: 10px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .exchange-card {
+            background: linear-gradient(135deg, #00b894, #00a085);
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            margin: 10px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .typing {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #666;
+        }
+
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background: #666;
+            border-radius: 50%;
+            animation: typing-bounce 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes typing-bounce {
+            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        .section-title {
+            color: white;
+            font-weight: bold;
+            margin: 15px 0 8px 0;
+            font-size: 0.9em;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .info-box {
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            border-left: 3px solid rgba(255,255,255,0.5);
+        }
+
+        .info-box div {
+            font-size: 0.8em;
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* Background Bubbles */
+        .bg-bubbles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-bubble {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        .bg-bubble:nth-child(1) { width: 80px; height: 80px; left: 10%; animation-delay: 0s; }
+        .bg-bubble:nth-child(2) { width: 120px; height: 120px; left: 20%; animation-delay: 2s; }
+        .bg-bubble:nth-child(3) { width: 60px; height: 60px; left: 35%; animation-delay: 4s; }
+        .bg-bubble:nth-child(4) { width: 100px; height: 100px; left: 50%; animation-delay: 6s; }
+        .bg-bubble:nth-child(5) { width: 70px; height: 70px; left: 65%; animation-delay: 8s; }
+        .bg-bubble:nth-child(6) { width: 90px; height: 90px; left: 80%; animation-delay: 10s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .chat-container {
+                height: 100vh;
+                max-width: 100%;
+                border-radius: 0;
+            }
+            
+            .header {
+                padding: 15px;
+            }
+            
+            .bubble {
+                max-width: 90%;
+            }
+            
+            .city-buttons {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="bg-bubbles">
+        <div class="bg-bubble"></div>
+        <div class="bg-bubble"></div>
+        <div class="bg-bubble"></div>
+        <div class="bg-bubble"></div>
+        <div class="bg-bubble"></div>
+        <div class="bg-bubble"></div>
+    </div>
+
     <div class="chat-container">
         <div class="header">
             <h1>🤖 မြန်မာစာ AI</h1>
-            <p style="color: rgba(255,255,255,0.8); font-size: 0.8em;">Fixed City Buttons Version</p>
+            <p>ပြင်ဆင်ထားသော City Buttons များ</p>
         </div>
         
         <div class="messages" id="messages">
             <div class="message bot-message">
                 <div class="bubble">
-                    <strong>မင်္ဂလာပါ! ✅</strong><br>
-                    City Buttons Fixed Version ပါ။
+                    <strong>မင်္ဂလာပါ! 🎉</strong><br>
+                    မြို့ခလုတ်များကို ပြင်ဆင်ထားသော Version ပါ။
 
-                    <!-- ✅ FIXED: Simple and Visible City Buttons -->
+                    <!-- ✅ IMPROVED: Better City Buttons -->
                     <div class="section-title">🌤️ ရာသီဥတု (မြို့ရွေးရန်):</div>
                     <div class="city-buttons">
                         <div class="city-btn" onclick="getWeather('Yangon')">ရန်ကုန်</div>
@@ -429,6 +396,7 @@
                         <div class="city-btn" onclick="getWeather('Taunggyi')">တောင်ကြီး</div>
                     </div>
 
+                    <div class="section-title">🚀 အခြား Features:</div>
                     <div class="quick-buttons">
                         <div class="quick-btn" onclick="getNews()">📰 မြန်မာသတင်း</div>
                         <div class="quick-btn" onclick="getExchange()">💱 ငွေလဲနှုန်း</div>
@@ -436,9 +404,9 @@
                         <div class="quick-btn" onclick="showOllamaInfo()">🔧 Ollama Setup</div>
                     </div>
 
-                    <div style="margin-top: 15px; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 10px;">
-                        <div style="font-size: 0.8em; color: rgba(255,255,255,0.9);">
-                            ✅ <strong>Fixed:</strong> မြို့ခလုတ်များ အခုမြင်ရပါပြီ
+                    <div class="info-box">
+                        <div>
+                            ✅ <strong>ပြင်ဆင်မှုများ:</strong> မြို့ခလုတ်များ ပိုမိုလှပ၊ မြန်မာစာဖောင့် ပိုမိုကောင်းမွန်
                         </div>
                     </div>
                 </div>
@@ -452,7 +420,7 @@
     </div>
 
     <script>
-        // Myanmar AI with Fixed City Buttons
+        // Myanmar AI with Improved City Buttons
         class MyanmarAI {
             constructor() {
                 this.weatherAPI = '4a15bf2e2d8117d50d11c8343171a78f';
@@ -485,6 +453,7 @@
                                 <div>အပူချိန်: ${temp}°C</div>
                                 <div>ရာသီဥတု: ${desc}</div>
                                 <div>စိုထိုင်းဆ: ${data.main.humidity}%</div>
+                                <div>လေတိုက်နှုန်း: ${data.wind.speed} m/s</div>
                             </div>
                         </div>`;
                     }
@@ -498,13 +467,23 @@
                     'Bago': 'ပဲခူး', 'Mawlamyine': 'မော်လမြိုင်', 'Taunggyi': 'တောင်ကြီး'
                 };
                 
+                const weatherData = {
+                    'Yangon': { temp: '၃၂°C', desc: '☀️ နေပူပူ', humidity: '၇၅%' },
+                    'Mandalay': { temp: '၃၅°C', desc: '🌤️ တိမ်အနည်းငယ်', humidity: '၆၅%' },
+                    'Naypyidaw': { temp: '၃၁°C', desc: '⛅ တိမ်အသင့်အတင့်', humidity: '၇၀%' },
+                    'Bago': { temp: '၃၃°C', desc: '🌤️ တိမ်အနည်းငယ်', humidity: '၇၂%' },
+                    'Mawlamyine': { temp: '၃၀°C', desc: '🌦️ မိုးအနည်းငယ်', humidity: '၈၀%' },
+                    'Taunggyi': { temp: '၂၅°C', desc: '☁️ တိမ်ထူ', humidity: '၆၈%' }
+                };
+                
+                const data = weatherData[city];
                 return `
                 <div class="weather-card">
                     <strong>🌤️ ${cityMap[city]} ရာသီဥတု</strong>
                     <div style="margin-top: 10px;">
-                        <div>အပူချိန်: ၃၀°C - ၃၅°C</div>
-                        <div>ရာသီဥတု: ⛅ တိမ်အနည်းငယ်</div>
-                        <div>စိုထိုင်းဆ: ၇၀%</div>
+                        <div>အပူချိန်: ${data.temp}</div>
+                        <div>ရာသီဥတု: ${data.desc}</div>
+                        <div>စိုထိုင်းဆ: ${data.humidity}</div>
                     </div>
                 </div>`;
             }
@@ -512,24 +491,26 @@
             async getNews() {
                 return `
                 <div class="news-card">
-                    <strong>📰 မြန်မာသတင်း</strong>
+                    <strong>📰 ယနေ့မြန်မာသတင်း</strong>
                     <div style="margin-top: 10px;">
                         <div>• နည်းပညာကဏ္ဍ တိုးတက်မှုများ</div>
                         <div>• ဒစ်ဂျစ်တယ်စီးပွားရေး ဖွံ့ဖြိုး</div>
                         <div>• AI နည်းပညာ မြန်မာပြည်တွင် စတင်</div>
+                        <div>• ကျေးလက်ဒေသ အင်တာနက်ရရှိရေး</div>
                     </div>
                 </div>`;
             }
 
             async getExchange() {
                 return `
-                <div class="weather-card">
-                    <strong>💱 ငွေလဲနှုန်းများ</strong>
+                <div class="exchange-card">
+                    <strong>💱 ယနေ့ငွေလဲနှုန်းများ</strong>
                     <div style="margin-top: 10px;">
                         <div>USD 1 = MMK 2,100 - 2,300</div>
                         <div>EUR 1 = MMK 2,300 - 2,500</div>
                         <div>SGD 1 = MMK 1,500 - 1,600</div>
                         <div>THB 1 = MMK 60 - 65</div>
+                        <div>CNY 1 = MMK 290 - 310</div>
                     </div>
                 </div>`;
             }
@@ -549,7 +530,7 @@
 
                     if (response.ok) {
                         const data = await response.json();
-                        return `🤖 Ollama: ${data.response}`;
+                        return `🤖 AI: ${data.response}`;
                     }
                 } catch (error) {
                     console.log('Ollama not available');
@@ -557,14 +538,17 @@
 
                 // Fallback responses
                 const responses = {
-                    'မင်္ဂလာပါ': 'မင်္ဂလာပါ! Myanmar AI မှ ကြိုဆိုပါတယ်။',
+                    'မင်္ဂလာပါ': 'မင်္ဂလာပါ! Myanmar AI မှ ကြိုဆိုပါတယ်။ ဘယ်လိုကူညီရမလဲ?',
                     'ကျေးဇူးတင်ပါတယ်': 'ရပါတယ်! ဆက်လက်အသုံးပြုနိုင်ပါတယ်။',
                     'နာမည်ဘယ်လိုခေါ်လဲ': 'ကျွန်တော့်နာမည်က AI Assistant ပါ။',
                     'မြန်မာလိုပြောတတ်သလား': 'ဟုတ်ကဲ့! မြန်မာလိုပြောတတ်ပါတယ်။',
-                    '၁၅×၃+၁၀': '၁၅ × ၃ = ၄၅, ၄၅ + ၁၀ = ၅၅<br><strong>အဖြေ: ၅၅</strong>'
+                    '၁၅×၃+၁၀': '၁၅ × ၃ = ၄၅, ၄၅ + ၁၀ = ၅၅<br><strong>အဖြေ: ၅၅</strong>',
+                    'အခြေခံဗေဒင်သင်္ချာ': '၁+၁=၂, ၂×၂=၄, ၃+၃=၆, ၄×၄=၁၆<br>ဒီလိုနဲ့ ဆက်တွက်နိုင်ပါတယ်။'
                 };
 
-                return responses[question] || `"${question}" မေးခွန်းအတွက် ကျေးဇူးတင်ပါတယ်။ ရာသီဥတု၊ သတင်း၊ ငွေလဲနှုန်းတွေ မေးမြန်းနိုင်ပါတယ်။`;
+                return responses[question] || 
+                `"${question}" မေးခွန်းအတွက် ကျေးဇူးတင်ပါတယ်။<br>
+                ကျွန်တော်က AI Assistant ဖြစ်ပြီး ရာသီဥတု၊ သတင်း၊ ငွေလဲနှုန်း၊ သင်္ချာတွက်ချက်မှုတွေ ကူညီပေးနိုင်ပါတယ်။`;
             }
 
             getOllamaInstructions() {
@@ -664,7 +648,10 @@
             
             if (userInput.includes('ရာသီဥတု')) {
                 const city = userInput.includes('မန္တလေး') ? 'Mandalay' : 
-                           userInput.includes('နေပြည်တော်') ? 'Naypyidaw' : 'Yangon';
+                           userInput.includes('နေပြည်တော်') ? 'Naypyidaw' : 
+                           userInput.includes('ပဲခူး') ? 'Bago' :
+                           userInput.includes('မော်လမြိုင်') ? 'Mawlamyine' :
+                           userInput.includes('တောင်ကြီး') ? 'Taunggyi' : 'Yangon';
                 getWeather(city);
             } else if (userInput.includes('သတင်း')) {
                 getNews();
@@ -682,11 +669,7 @@
             if (e.key === 'Enter') sendMessage();
         });
 
-        console.log('Myanmar AI with Fixed City Buttons Loaded!');
+        console.log('Myanmar AI with Improved City Buttons Loaded!');
     </script>
 </body>
 </html>
-
-
-
-
